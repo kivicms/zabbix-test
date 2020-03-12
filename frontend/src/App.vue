@@ -1,12 +1,23 @@
 <template>
-  <div id="app" class="container">
+  <div
+    id="app"
+    class="container"
+  >
     <div id="nav">
-      <router-link to="/">Главная</router-link> |
-      <router-link to="/login">Авторизация</router-link> |
-      <router-link to="/device-list">Список устройств</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/">
+        Главная
+      </router-link> |
+      <router-link to="/login">
+        Авторизация
+      </router-link> |
+      <router-link to="/device-list">
+        Список устройств
+      </router-link> |
+      <router-link to="/about">
+        About
+      </router-link>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 

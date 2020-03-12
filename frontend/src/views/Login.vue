@@ -30,6 +30,18 @@
           </button>
         </div>
       </form>
+      <p
+        v-if="loginError"
+        class="text-danger"
+      >
+        {{ errorMessage }}
+      </p>
+      <p
+        v-show="isAutorized"
+        class="text-success"
+      >
+        Вы успешно авторизованы и можете перейти к списку хостов
+      </p>
     </div>
     <div class="col" />
   </div>
@@ -40,9 +52,9 @@ import { Component, Vue } from 'vue-property-decorator'
 
   @Component
 export default class DeviceList extends Vue {
-    login = ''
-    password = ''
-
+    errorMessage = ''
+    loginError = false
+    isAutorized = false
     rpc = {
       jsonrpc: '2.0',
       method: 'user.login',
@@ -54,8 +66,14 @@ export default class DeviceList extends Vue {
     }
 
     onLogin (): void {
-      this.$axios.post('localhost', this.rpc).then(res => {
-        console.log(res)
+      this.$axios.post('http://localhost:8888/api_jsonrpc.php', this.rpc).then(res => {
+        if (!res.data.error) {
+          localStorage.setItem('token', res.data.result)
+          this.isAutorized = true
+        } else {
+          this.loginError = true
+          this.errorMessage = res.data.error.data
+        }
       })
         .catch(error => {
           console.log(error)

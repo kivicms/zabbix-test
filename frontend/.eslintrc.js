@@ -20,7 +20,7 @@ module.exports = {
     'no-debugger': 'off'
   },
 
-  'extends': [
+  extends: [
     'plugin:vue/recommended',
     '@vue/standard',
     '@vue/typescript/recommended'
