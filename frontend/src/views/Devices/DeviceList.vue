@@ -3,35 +3,29 @@
     <div class="card-header">
       Устройства
       <button
-        v-show="isAuthorized"
         class="btn btn-outline-info btn-sm float-right"
         @click="refreshDeviceList"
       >
         <font-awesome-icon icon="sync" />
       </button>
-      <button
-        v-show="isAuthorized"
+      <router-link
         class="btn btn-outline-success btn-sm float-right mr-2"
+        to="create"
       >
         <font-awesome-icon icon="plus" />
-      </button>
+      </router-link>
     </div>
     <div class="card-body">
       <div class="row">
-        <div class="col-12 text-center">
-          <p class="text-danger">
-            Чтобы просмотреть список хостов требуется авторизация
-          </p>
-        </div>
         <div class="col-12">
           <table class="table table-hover table-bordered mt-2">
             <thead>
               <tr>
-                <th>#</th>
-                <th>Устройство</th>
-                <th>Статус</th>
-                <th>Название</th>
-                <th />
+                <th class="text-center">#</th>
+                <th class="text-center">Хост</th>
+                <th class="text-center">Статус</th>
+                <th class="text-center">Название</th>
+                <th class="text-center" />
               </tr>
             </thead>
             <tbody>
@@ -41,16 +35,25 @@
               >
                 <td>{{ h.hostid }}</td>
                 <td>{{ h.host }}</td>
-                <td>{{ h.status }}</td>
+                <td class="text-center"><status-badge :status="h.status" /></td>
                 <td>{{ h.name }}</td>
                 <td class="text-center">
-                  <button class="btn btn-sm btn-outline-info">
+                  <router-link
+                    class="btn btn-sm btn-outline-info"
+                    :to="'view/' + h.hostid"
+                  >
                     <font-awesome-icon icon="eye" />
-                  </button>
-                  <button class="btn btn-sm btn-outline-success ml-2">
+                  </router-link>
+                  <router-link
+                    class="btn btn-sm btn-outline-success ml-2"
+                    :to="'update/' + h.hostid"
+                  >
                     <font-awesome-icon icon="edit" />
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger ml-2">
+                  </router-link>
+                  <button
+                    class="btn btn-sm btn-outline-danger ml-2"
+                    @click="deleteDevice(h.hostid)"
+                  >
                     <font-awesome-icon icon="trash" />
                   </button>
                 </td>
@@ -65,10 +68,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-
-  @Component
+import StatusBadge from '@/views/Devices/StatusBadge.vue'
+@Component({
+  components: { StatusBadge }
+})
 export default class DeviceList extends Vue {
-    rpc = {
+    private rpc = {
       jsonrpc: '2.0',
       method: 'host.get',
       params: {
@@ -78,27 +83,32 @@ export default class DeviceList extends Vue {
       id: 1
     }
 
-    isAuthorized = false
-
-    hosts = {}
+    private hosts: Array<object> = []
 
     mounted (): void {
-      const token = localStorage.getItem('token')
-      if (token) {
-        this.rpc.auth = token
-        this.isAuthorized = true
-      } else {
-        this.isAuthorized = false
-      }
+      const token: any = localStorage.getItem('token')
+      this.rpc.auth = token
+      this.fetch()
     }
 
-    refreshDeviceList (): void {
+    fetch (): void {
       this.$axios.post('http://localhost:8888/api_jsonrpc.php', this.rpc).then(res => {
         this.hosts = res.data.result
       })
         .catch(error => {
           console.log(error)
         })
+    }
+
+    refreshDeviceList (): void {
+      this.fetch()
+    }
+
+    deleteDevice (id: number): void {
+      if (window.confirm('Удалить устройство?')) {
+        console.log('delete device with id: ' + id)
+        this.fetch()
+      }
     }
 }
 </script>
