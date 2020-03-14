@@ -21,10 +21,18 @@
           <table class="table table-hover table-bordered mt-2">
             <thead>
               <tr>
-                <th class="text-center">#</th>
-                <th class="text-center">Хост</th>
-                <th class="text-center">Статус</th>
-                <th class="text-center">Название</th>
+                <th class="text-center">
+                  #
+                </th>
+                <th class="text-center">
+                  Хост
+                </th>
+                <th class="text-center">
+                  Статус
+                </th>
+                <th class="text-center">
+                  Название
+                </th>
                 <th class="text-center" />
               </tr>
             </thead>
@@ -35,7 +43,9 @@
               >
                 <td>{{ h.hostid }}</td>
                 <td>{{ h.host }}</td>
-                <td class="text-center"><status-badge :status="h.status" /></td>
+                <td class="text-center">
+                  <status-badge :status="h.status" />
+                </td>
                 <td>{{ h.name }}</td>
                 <td class="text-center">
                   <router-link
@@ -52,7 +62,7 @@
                   </router-link>
                   <button
                     class="btn btn-sm btn-outline-danger ml-2"
-                    @click="deleteDevice(h.hostid)"
+                    @click="deleteDevice(h.hostid, index)"
                   >
                     <font-awesome-icon icon="trash" />
                   </button>
@@ -91,7 +101,7 @@ export default class DeviceList extends Vue {
       this.fetch()
     }
 
-    fetch (): void {
+    fetch () {
       this.$axios.post('http://localhost:8888/api_jsonrpc.php', this.rpc).then(res => {
         this.hosts = res.data.result
       })
@@ -104,10 +114,20 @@ export default class DeviceList extends Vue {
       this.fetch()
     }
 
-    deleteDevice (id: number): void {
+    deleteDevice (id: number, index: number): void {
       if (window.confirm('Удалить устройство?')) {
-        console.log('delete device with id: ' + id)
-        this.fetch()
+        this.$axios.post('http://localhost:8888/api_jsonrpc.php', {
+          jsonrpc: '2.0',
+          method: 'host.delete',
+          params: [id],
+          auth: localStorage.getItem('token'),
+          id: 3
+        }).then(res => {
+          this.hosts.splice(index, 1)
+        })
+          .catch(error => {
+            console.log(error)
+          })
       }
     }
 }

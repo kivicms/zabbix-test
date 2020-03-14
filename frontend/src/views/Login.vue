@@ -61,6 +61,7 @@ export default class DeviceList extends Vue {
     errorMessage = ''
     loginError = false
     isAutorized = false
+
     rpc = {
       jsonrpc: '2.0',
       method: 'user.login',
@@ -76,6 +77,7 @@ export default class DeviceList extends Vue {
         if (!res.data.error) {
           localStorage.setItem('token', res.data.result)
           this.isAutorized = true
+          Vue.prototype.$api = Vue.prototype.$zabbixClient.login(this.rpc.params.user, this.rpc.params.password)
           this.$router.push('/device-list')
         } else {
           this.loginError = true
