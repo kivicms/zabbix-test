@@ -13,10 +13,11 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
+import IHost from '@/interfaces/IHost'
 
 @Component
 export default class Tags extends Vue {
-    @Prop(Object) readonly entry: object
+    @Prop(Object) readonly entry: IHost | undefined
 }
 </script>
 

@@ -18,7 +18,7 @@
           :key="index"
           :position="m.position"
           :clickable="true"
-          :draggable="true"
+          :draggable="false"
           @click="center=m.position"
         />
       </GmapMap>
@@ -29,8 +29,10 @@
 <script lang="ts">
 /* eslint-disable */
 import { Component, Vue } from 'vue-property-decorator'
+import IMarker from '@/interfaces/IMarker'
+import IHost from "@/interfaces/IHost";
 
-  @Component
+@Component
 export default class DeviceMap extends Vue {
   isLoaded = false
   entries = []
@@ -45,7 +47,7 @@ export default class DeviceMap extends Vue {
       id: 1
     }
 
-    markers = []
+    markers: Array<IMarker> = []
 
     mounted (): void {
       const token: any = localStorage.getItem('token')
@@ -56,9 +58,9 @@ export default class DeviceMap extends Vue {
     fetch () {
       this.$axios.post('http://localhost:8888/api_jsonrpc.php', this.rpc).then(response => {
         const self = this
-        response.data.result.forEach(function(item) {
+        response.data.result.forEach(function(item: IHost) {
 
-          if (item.inventory.location !== undefined) {
+          if (item.inventory.location != undefined) {
             self.markers.push ({
               location: item.inventory.location,
               position: {

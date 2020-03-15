@@ -34,7 +34,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 
   @Component
 export default class Device extends Vue {
-    @Prop(Object) readonly entry: object
+    @Prop(Object) readonly entry: object | undefined
 }
 </script>
 

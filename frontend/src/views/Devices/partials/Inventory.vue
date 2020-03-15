@@ -24,7 +24,11 @@
     </dl>
     <hr>
     <em>Неупорядоченный список всех параметров из inventory</em>
-    <dl class="row" v-for="a, i in all" v-bind:key="i">
+    <dl
+      v-for="a, i in all"
+      :key="i"
+      class="row"
+    >
       <dt class="col-sm-3">
         {{ a.key }}
       </dt>
@@ -36,14 +40,15 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
+import IHost from '@/interfaces/IHost'
 
-  @Component
+@Component
 export default class Inventory extends Vue {
-    @Prop(Object) readonly entry: object
-    all = []
+    @Prop(Object) readonly entry: IHost | undefined
+
+    all: Array<{ key: string; val: string}> = []
     mounted (): void {
-      for (const [key, value] of Object.entries(this.entry.inventory)) {
-        // console.log(`${key}: ${value}`)
+      for (const [key, value] of Object.entries((this.entry as IHost).inventory)) {
         this.all.push({ key: key, val: value })
       }
     }

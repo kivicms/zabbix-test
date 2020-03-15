@@ -12,7 +12,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 
 @Component
 export default class Items extends Vue {
-  @Prop(Object) readonly entry: object
+  @Prop(Object) readonly entry: object | undefined
 }
 </script>
 

@@ -193,7 +193,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-
+import Host from '@/interfaces/Host'
   @Component
 export default class DeviceUpdate extends Vue {
   isLoaded = false
@@ -217,9 +217,11 @@ export default class DeviceUpdate extends Vue {
   ]
 
   hostId = ''
-  entry = {
+  /* entry = {
     params: {}
-  }
+  } */
+
+  entry: Host = new Host()
 
   private groupsRpc = {
     jsonrpc: '2.0',
@@ -295,12 +297,12 @@ export default class DeviceUpdate extends Vue {
 
   addInterface (): void {
     this.entry.interfaces.push({
-      type: 0,
-      main: 0,
-      useip: 0,
+      type: '0',
+      main: '0',
+      useip: '0',
       ip: '',
       dns: '',
-      port: 0
+      port: '0'
     })
   }
 

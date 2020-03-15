@@ -40,10 +40,11 @@
 <script lang='ts'>
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import GraphModal from '@/views/Devices/partials/GraphModal.vue'
+import IHost from '@/interfaces/IHost'
 
 @Component({ components: { GraphModal } })
 export default class Graphs extends Vue {
-  @Prop(Object) readonly entry: object;
+  @Prop(Object) readonly entry: object | undefined;
 
   graphId = ''
   hostId = ''
@@ -51,7 +52,7 @@ export default class Graphs extends Vue {
 
   showGraph (graphId: string): void {
     this.graphId = graphId
-    this.hostId = this.entry.hostid
+    this.hostId = (this.entry as IHost).hostid
     this.showModal = true
   }
 }
