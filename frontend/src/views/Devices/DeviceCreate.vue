@@ -233,14 +233,14 @@ export default class DeviceCreate extends Vue {
       groups: [],
       // Описание интерфейса дано для упрощения
       interfaces: [
-        {
+        /* {
           type: 1,
           main: 0,
           useip: 1,
           ip: '',
           dns: '',
           port: 10050
-        }
+        } */
       ],
       inventory: {
         location: '',

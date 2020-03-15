@@ -12,9 +12,15 @@ import store from './store'
 import vSelect from 'vue-select'
 
 import 'vue-select/src/scss/vue-select.scss'
-// import { ZabbixClient } from 'zabbix-client/dist'
 
-// Vue.prototype.$zabbixClient = new ZabbixClient('http://localhost:8888/api_jsonrpc.php')
+import * as VueGoogleMaps from 'vue2-google-maps'
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyA2gV866ygAcuZ16-5pbwrWBZ3j4AQyurA',
+    libraries: 'places'
+  }
+})
+
 Vue.use(ZabbixPlugin)
 Vue.component('v-select', vSelect)
 Vue.config.productionTip = false

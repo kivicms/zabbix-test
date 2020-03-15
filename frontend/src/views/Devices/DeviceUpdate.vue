@@ -261,7 +261,7 @@ export default class DeviceUpdate extends Vue {
     this.fetchGroups()
     this.$axios.post('http://localhost:8888/api_jsonrpc.php', this.updateRpc).then(res => {
       this.entry = res.data.result[0]
-      this.selectedGroups = res.data.result[0].groups
+      this.selectedGroups = res.data.result[0].groups.map((item) => { return item.groupid })
       this.isLoaded = true
     })
       .catch(error => {
@@ -319,9 +319,18 @@ export default class DeviceUpdate extends Vue {
       method: 'host.update',
       params: {
         hostid: this.hostId,
-        status: 0
-        // ...this.entry,
-        // groups: this.selectedGroups.map((item) => { return { groupid: item.groupid } })
+        host: this.entry.host,
+        name: this.entry.name,
+        description: this.entry.description,
+        inventory: {
+          location: this.entry.inventory.location,
+          // eslint-disable-next-line
+          location_lat: this.entry.inventory.location_lat,
+          // eslint-disable-next-line
+          location_lon: this.entry.inventory.location_lon
+        },
+        interfaces: this.entry.interfaces,
+        groups: this.selectedGroups.map((item) => { return { groupid: item } })
       },
       auth: localStorage.getItem('token'),
       id: 3
