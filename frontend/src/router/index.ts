@@ -40,6 +40,11 @@ const routes = [
             path: 'update/:id',
             name: 'Device update',
             component: () => import('../views/Devices/DeviceUpdate.vue')
+          },
+          {
+            path: 'graph/:id/:graphId',
+            name: 'Device graph',
+            component: () => import('../views/Devices/DeviceGraph.vue')
           }
         ]
       },
@@ -47,6 +52,11 @@ const routes = [
         path: 'map',
         name: 'Map',
         component: () => import('../views/Map.vue')
+      },
+      {
+        path: 'profile',
+        name: 'Profile',
+        component: () => import('../views/Profile.vue')
       },
       {
         path: 'about',

@@ -1,53 +1,49 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-info mb-5">
-    <a
-      class="navbar-brand"
-      href="#"
-    >Navbar</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
+  <div class="mb-4">
+    <b-navbar
+      toggleable="lg"
+      type="dark"
+      variant="info"
     >
-      <span class="navbar-toggler-icon" />
-    </button>
+      <b-navbar-brand to="/device-list">
+        ZabbixTest
+      </b-navbar-brand>
 
-    <div
-      id="navbarSupportedContent"
-      class="collapse navbar-collapse"
-    >
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <router-link
-            to="/device-list"
-            class="nav-link"
-          >
-            Список устройств
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link
-            to="/map"
-            class="nav-link"
-          >
+      <b-navbar-toggle target="nav-collapse" />
+
+      <b-collapse
+        id="nav-collapse"
+        is-nav
+      >
+        <b-navbar-nav>
+          <b-nav-item to="/device-list">
+            Главная
+          </b-nav-item>
+          <b-nav-item to="/map">
             Карта
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link
-            to="/about"
-            class="nav-link"
-          >
+          </b-nav-item>
+        </b-navbar-nav>
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item to="/about">
             Описание приложения
-          </router-link>
-        </li>
-      </ul>
-    </div>
-  </nav>
+          </b-nav-item>
+          <b-nav-item-dropdown right>
+            <template v-slot:button-content>
+              <em>{{UserName}}</em>
+            </template>
+            <b-dropdown-item to="/profile">
+              <font-awesome-icon icon="user" />
+              Профиль
+            </b-dropdown-item>
+            <b-dropdown-item @click="signOut">
+              <font-awesome-icon icon="sign-out-alt" />
+              Выход
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
+  </div>
 </template>
 <script lang="ts">
 /* eslint-disable */
@@ -55,7 +51,15 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component
 export default class DeviceMap extends Vue {
+  signOut() {
+    localStorage.removeItem('token')
+    localStorage.removeItem('username')
+    this.$router.push('/login')
+  }
 
+  get UserName (): string {
+    return localStorage.getItem('username')
+  }
 }
 </script>
 

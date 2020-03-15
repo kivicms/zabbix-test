@@ -76,6 +76,7 @@ export default class DeviceList extends Vue {
       this.$axios.post('http://localhost:8888/api_jsonrpc.php', this.rpc).then(res => {
         if (!res.data.error) {
           localStorage.setItem('token', res.data.result)
+          localStorage.setItem('username', this.rpc.params.user)
           this.isAutorized = true
           Vue.prototype.$api = Vue.prototype.$zabbixClient.login(this.rpc.params.user, this.rpc.params.password)
           this.$router.push('/device-list')
