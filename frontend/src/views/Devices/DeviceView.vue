@@ -58,25 +58,23 @@ import Inventory from '@/views/Devices/partials/Inventory.vue'
 import Screens from '@/views/Devices/partials/Screens.vue'
 import Tags from '@/views/Devices/partials/Tags.vue'
 import Items from '@/views/Devices/partials/Items.vue'
-import IHost from '@/interfaces/IHost'
-import Host from '@/interfaces/Host'
 
-@Component({
-  components: {
-    Items,
-    Device,
-    Discoveries,
-    Graphs,
-    Groups,
-    Inventory,
-    Screens,
-    Tags
-  }
-})
+  @Component({
+    components: {
+      Items,
+      Device,
+      Discoveries,
+      Graphs,
+      Groups,
+      Inventory,
+      Screens,
+      Tags
+    }
+  })
 export default class DeviceView extends Vue {
     isLoaded = false
     hostId = ''
-    entry: Host = {}
+    entry = {}
 
     private viewRpc = {
       jsonrpc: '2.0',

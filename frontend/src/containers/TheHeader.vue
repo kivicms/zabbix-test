@@ -58,7 +58,8 @@ export default class DeviceMap extends Vue {
   }
 
   get UserName (): string {
-    return localStorage.getItem('username')
+    const username = localStorage.getItem('username')
+    return username ?? ''
   }
 }
 </script>

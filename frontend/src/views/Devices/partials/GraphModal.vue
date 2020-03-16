@@ -9,40 +9,40 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 
 @Component
 export default class GraphModal extends Vue {
-  @Prop(String) hostId?: string;
-  @Prop({ type: String, default: '' }) graphId: string | undefined;
+    @Prop({ type: String, default: '' }) hostId: string
+    @Prop({ type: String, default: '' }) graphId: string
 
-  entry = [];
-  isLoaded = false
-  private graphRpc = {
-    jsonrpc: '2.0',
-    method: 'graph.get',
-    params: {
-      output: 'extends',
-      expandData: 1,
-      graphids: '',
-      hostids: '',
-      selectGraphItems: 'extends'
-    },
-    auth: '',
-    id: 1
-  };
+    entry = []
+    isLoaded = false
+    private graphRpc = {
+      jsonrpc: '2.0',
+      method: 'graph.get',
+      params: {
+        output: 'extends',
+        expandData: 1,
+        graphids: '',
+        hostids: '',
+        selectGraphItems: 'extends'
+      },
+      auth: '',
+      id: 1
+    }
 
-  mounted (): void {
-    const token: any = localStorage.getItem('token')
-    this.graphRpc.auth = token
-    this.graphRpc.params.hostids = this.hostId
-    this.graphRpc.params.graphids = this.graphId
-    this.$axios
-      .post('http://localhost:8888/api_jsonrpc.php', this.graphRpc)
-      .then(res => {
-        this.entry = res.data.result[0]
-        this.isLoaded = true
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  }
+    mounted (): void {
+      const token: any = localStorage.getItem('token')
+      this.graphRpc.auth = token
+      this.graphRpc.params.hostids = this.hostId
+      this.graphRpc.params.graphids = this.graphId
+      this.$axios
+        .post('http://localhost:8888/api_jsonrpc.php', this.graphRpc)
+        .then(res => {
+          this.entry = res.data.result[0]
+          this.isLoaded = true
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
 }
 </script>
 <style scoped>

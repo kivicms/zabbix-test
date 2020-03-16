@@ -193,7 +193,10 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import Host from '@/interfaces/Host'
+import Host from '@/entities/Host'
+import Interface from '@/entities/Interface'
+import Group from '@/entities/Group'
+
   @Component
 export default class DeviceUpdate extends Vue {
   isLoaded = false
@@ -217,11 +220,7 @@ export default class DeviceUpdate extends Vue {
   ]
 
   hostId = ''
-  /* entry = {
-    params: {}
-  } */
-
-  entry: Host = new Host()
+  entry: Host
 
   private groupsRpc = {
     jsonrpc: '2.0',
@@ -248,7 +247,7 @@ export default class DeviceUpdate extends Vue {
     id: 1
   }
 
-  private groups: Array<object> = []
+  private groups: Array<Group> = []
 
   private errors: Array<string> = []
 
@@ -263,7 +262,7 @@ export default class DeviceUpdate extends Vue {
     this.fetchGroups()
     this.$axios.post('http://localhost:8888/api_jsonrpc.php', this.updateRpc).then(res => {
       this.entry = res.data.result[0]
-      this.selectedGroups = res.data.result[0].groups.map((item) => { return item.groupid })
+      this.selectedGroups = res.data.result[0].groups.map((item: Group) => { return item.groupid })
       this.isLoaded = true
     })
       .catch(error => {
@@ -296,14 +295,7 @@ export default class DeviceUpdate extends Vue {
   }
 
   addInterface (): void {
-    this.entry.interfaces.push({
-      type: '0',
-      main: '0',
-      useip: '0',
-      ip: '',
-      dns: '',
-      port: '0'
-    })
+    this.entry.interfaces.push(new Interface('0', '0', '0', '', '', ''))
   }
 
   removeInterface (id: number): void {
@@ -332,7 +324,7 @@ export default class DeviceUpdate extends Vue {
           location_lon: this.entry.inventory.location_lon
         },
         interfaces: this.entry.interfaces,
-        groups: this.selectedGroups.map((item) => { return { groupid: item } })
+        groups: this.selectedGroups.map((item: Group) => { return { groupid: item } })
       },
       auth: localStorage.getItem('token'),
       id: 3

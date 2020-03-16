@@ -28,14 +28,14 @@
 
 <script lang="ts">
 /* eslint-disable */
-import { Component, Vue } from 'vue-property-decorator'
-import IMarker from '@/interfaces/IMarker'
-import IHost from "@/interfaces/IHost";
+  import { Component, Vue } from 'vue-property-decorator'
+  import IMarker from '@/interfaces/IMarker'
+  import IHost from '@/interfaces/IHost'
 
-@Component
-export default class DeviceMap extends Vue {
-  isLoaded = false
-  entries = []
+  @Component
+  export default class DeviceMap extends Vue {
+    isLoaded = false
+    entries = []
     private rpc = {
       jsonrpc: '2.0',
       method: 'host.get',
@@ -50,22 +50,22 @@ export default class DeviceMap extends Vue {
     markers: Array<IMarker> = []
 
     mounted (): void {
-      const token: any = localStorage.getItem('token')
+      const token: any = localStorage.getItem ('token')
       this.rpc.auth = token
-      this.fetch()
+      this.fetch ()
     }
 
     fetch () {
-      this.$axios.post('http://localhost:8888/api_jsonrpc.php', this.rpc).then(response => {
+      this.$axios.post ('http://localhost:8888/api_jsonrpc.php', this.rpc).then (response => {
         const self = this
-        response.data.result.forEach(function(item: IHost) {
+        response.data.result.forEach (function (item: IHost) {
 
           if (item.inventory.location != undefined) {
             self.markers.push ({
               location: item.inventory.location,
               position: {
-                lat: parseFloat(item.inventory.location_lat),
-                lng: parseFloat(item.inventory.location_lon)
+                lat: parseFloat (item.inventory.location_lat),
+                lng: parseFloat (item.inventory.location_lon)
               }
             })
           }
@@ -73,11 +73,11 @@ export default class DeviceMap extends Vue {
 
         this.isLoaded = true
       })
-        .catch(error => {
-          console.log(error)
+        .catch (error => {
+          console.log (error)
         })
     }
-}
+  }
 </script>
 
 <style scoped>

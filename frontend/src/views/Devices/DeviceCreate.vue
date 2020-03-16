@@ -190,73 +190,66 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import Group from '@/entities/Group'
+import Interface from '@/entities/Interface'
 
   @Component
 export default class DeviceCreate extends Vue {
-  iTypes = [
-    {
-      label: 'Агент',
-      value: 1
-    },
-    {
-      label: 'SNMP',
-      value: 2
-    },
-    {
-      label: 'IPMI',
-      value: 3
-    },
-    {
-      label: 'JMX',
-      value: 4
-    }
-  ]
-
-  private groupsRpc = {
-    jsonrpc: '2.0',
-    method: 'hostgroup.get',
-    params: {
-      output: 'extend',
-      sortfield: 'name'
-    },
-    id: 1,
-    auth: ''
-  }
-
-  private createRpc = {
-    jsonrpc: '2.0',
-    method: 'host.create',
-    params: {
-      host: null,
-      name: null,
-      description: null,
-      groups: [],
-      // Описание интерфейса дано для упрощения
-      interfaces: [
-        /* {
-          type: 1,
-          main: 0,
-          useip: 1,
-          ip: '',
-          dns: '',
-          port: 10050
-        } */
-      ],
-      inventory: {
-        location: '',
-        // eslint-disable-next-line
-        location_lat: '',
-        // eslint-disable-next-line
-        location_lon: ''
+    iTypes = [
+      {
+        label: 'Агент',
+        value: 1
+      },
+      {
+        label: 'SNMP',
+        value: 2
+      },
+      {
+        label: 'IPMI',
+        value: 3
+      },
+      {
+        label: 'JMX',
+        value: 4
       }
-    },
-    id: 2,
-    auth: ''
-  }
+    ]
 
-  private groups: Array<object> = []
+    private groupsRpc = {
+      jsonrpc: '2.0',
+      method: 'hostgroup.get',
+      params: {
+        output: 'extend',
+        sortfield: 'name'
+      },
+      id: 1,
+      auth: ''
+    }
 
-  private errors: Array<string> = []
+    private createRpc = {
+      jsonrpc: '2.0',
+      method: 'host.create',
+      params: {
+        host: null,
+        name: null,
+        description: null,
+        groups: [],
+        // Описание интерфейса дано для упрощения
+        interfaces: [],
+        inventory: {
+          location: '',
+          // eslint-disable-next-line
+          location_lat: '',
+          // eslint-disable-next-line
+          location_lon: ''
+        }
+      },
+      id: 2,
+      auth: ''
+    }
+
+    private groups: Array<Group> = []
+
+    private errors: Array<string> = []
 
     private selectedGroups = []
 
@@ -268,8 +261,8 @@ export default class DeviceCreate extends Vue {
     }
 
     fetchGroups (): void {
-    // eslint-disable-next-line
-    const self = this
+      // eslint-disable-next-line
+      const self = this
       this.$axios.post('http://localhost:8888/api_jsonrpc.php', this.groupsRpc)
         .then(response => {
           this.groups = response.data.result
@@ -291,14 +284,7 @@ export default class DeviceCreate extends Vue {
     }
 
     addInterface (): void {
-      this.createRpc.params.interfaces.push({
-        type: 0,
-        main: 0,
-        useip: 0,
-        ip: '',
-        dns: '',
-        port: 0
-      })
+      this.createRpc.params.interfaces.push(new Interface('0', '0', '0', '', '', '0'))
     }
 
     removeInterface (id: number): void {
@@ -311,10 +297,9 @@ export default class DeviceCreate extends Vue {
       this.checkForm(event)
       event.preventDefault()
       // eslint-disable-next-line
-      const self = this
-
-      // eslint-disable-next-line
-      self.createRpc.params.groups = this.selectedGroups.map((item) => { return { groupid: item.groupid } })
+      this.createRpc.params.groups = this.selectedGroups.map ((item: Group) => {
+        return { groupid: item.groupid }
+      })
 
       this.$axios.post('http://localhost:8888/api_jsonrpc.php', this.createRpc)
         .then(response => {
