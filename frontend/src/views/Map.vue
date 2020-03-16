@@ -28,14 +28,15 @@
 
 <script lang="ts">
 /* eslint-disable */
-  import { Component, Vue } from 'vue-property-decorator'
-  import IMarker from '@/interfaces/IMarker'
-  import IHost from '@/interfaces/IHost'
+import { Component, Vue } from 'vue-property-decorator'
+
+import Host from '@/entities/Host'
+import Marker from '@/entities/Marker'
 
   @Component
   export default class DeviceMap extends Vue {
     isLoaded = false
-    entries = []
+    entries: Array<Host> = []
     private rpc = {
       jsonrpc: '2.0',
       method: 'host.get',
@@ -47,7 +48,7 @@
       id: 1
     }
 
-    markers: Array<IMarker> = []
+    markers: Array<Marker> = []
 
     mounted (): void {
       const token: any = localStorage.getItem ('token')
@@ -58,7 +59,7 @@
     fetch () {
       this.$axios.post ('http://localhost:8888/api_jsonrpc.php', this.rpc).then (response => {
         const self = this
-        response.data.result.forEach (function (item: IHost) {
+        response.data.result.forEach (function (item: Host) {
 
           if (item.inventory.location != undefined) {
             self.markers.push ({

@@ -3,4 +3,8 @@ export default class Group {
   name = ''
   internal = ''
   flags = ''
+
+  constructor (groupid: string) {
+    this.groupid = groupid
+  }
 }

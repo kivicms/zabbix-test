@@ -2,21 +2,22 @@
   <div>
     <ul class="list-group">
       <li
-        v-for="g, index in entry.screens"
+        v-for="s, index in screens"
         :key="index"
         class="list-group-item"
       >
-        {{ g.name }}
+        {{ s.name }}
       </li>
     </ul>
   </div>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
+import Screen from '@/entities/Screen'
 
 @Component
 export default class Screens extends Vue {
-    @Prop(Object) readonly entry: object | undefined
+    @Prop(Array) readonly screens: Array<Screen>
 }
 </script>
 

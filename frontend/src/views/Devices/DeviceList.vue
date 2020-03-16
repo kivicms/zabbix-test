@@ -123,7 +123,7 @@ export default class DeviceList extends Vue {
           params: [id],
           auth: localStorage.getItem('token'),
           id: 3
-        }).then(res => {
+        }).then(() => {
           this.hosts.splice(index, 1)
         })
           .catch(error => {

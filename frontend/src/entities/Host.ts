@@ -5,6 +5,7 @@ import Group from '@/entities/Group'
 import Item from '@/entities/Item'
 import Discovery from '@/entities/Discovery'
 import Graph from '@/entities/Graph'
+import Tag from '@/entities/Tag'
 
 export default class Host {
   public hostid = ''
@@ -56,4 +57,6 @@ export default class Host {
   public discoveries: Array<Discovery>
   public interfaces: Array<Interface>
   public applications: Array<Application>
+  public screens: Array<Screen>
+  public tags: Array<Tag>
 }

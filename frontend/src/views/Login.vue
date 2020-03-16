@@ -78,7 +78,7 @@ export default class DeviceList extends Vue {
           localStorage.setItem('token', res.data.result)
           localStorage.setItem('username', this.rpc.params.user)
           this.isAutorized = true
-          Vue.prototype.$api = Vue.prototype.$zabbixClient.login(this.rpc.params.user, this.rpc.params.password)
+          // Vue.prototype.$api = Vue.prototype.$zabbixClient.login(this.rpc.params.user, this.rpc.params.password)
           this.$router.push('/device-list')
         } else {
           this.loginError = true

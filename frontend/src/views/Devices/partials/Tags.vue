@@ -2,22 +2,22 @@
   <div>
     <ul class="list-group">
       <li
-        v-for="g, index in entry.tags"
+        v-for="t, index in tags"
         :key="index"
         class="list-group-item"
       >
-        {{ g.name }}
+        {{ t.name }}
       </li>
     </ul>
   </div>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import IHost from '@/interfaces/IHost'
+import Tag from '@/entities/Tag'
 
-@Component
+  @Component
 export default class Tags extends Vue {
-    @Prop(Object) readonly entry: IHost | undefined
+    @Prop(Array) readonly tags: Array<Tag>
 }
 </script>
 

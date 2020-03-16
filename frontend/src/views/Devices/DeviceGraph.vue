@@ -35,8 +35,7 @@ export default class DeviceGraph extends Vue {
   }
 
   mounted (): void {
-    const token: any = localStorage.getItem('token')
-    this.graphRpc.auth = token
+    this.graphRpc.auth = localStorage.getItem('token') ?? ''
     this.graphRpc.params.hostids = this.$route.params.id
     this.graphRpc.params.graphids = this.$route.params.graphId
     this.$axios.post('http://localhost:8888/api_jsonrpc.php', this.graphRpc).then(res => {

@@ -1,7 +1,11 @@
 <template>
   <div>
     <ul class="list-group">
-      <li v-for="group, index in groups" v-bind:key="index" class="list-group-item">
+      <li
+        v-for="group, index in groups"
+        :key="index"
+        class="list-group-item"
+      >
         {{ group.name }}
       </li>
     </ul>

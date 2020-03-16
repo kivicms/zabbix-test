@@ -125,42 +125,48 @@
                   :key="iIndex"
                 >
                   <td>
-                    <v-select
+                    <b-form-select
                       v-model="i.type"
                       :options="iTypes"
                       :reduce="item => item.value"
+                      class="form-control"
                     />
                   </td>
                   <td>
                     <input
                       v-model="i.dns"
                       type="text"
+                      class="form-control"
                     >
                   </td>
                   <td>
                     <input
                       v-model="i.ip"
                       type="text"
+                      class="form-control"
                     >
                   </td>
                   <td>
                     <input
                       v-model="i.port"
                       type="text"
+                      class="form-control"
                     >
                   </td>
                   <td>
-                    <v-select
+                    <b-form-select
                       v-model="i.useip"
-                      :options="[{label: 'Use DNS', value: '0'}, {label: 'Use IP', value: '1'}]"
+                      :options="[{text: 'Use DNS', value: 0}, {text: 'Use IP', value: 1}]"
                       :reduce="item => item.value"
+                      class="form-control"
                     />
                   </td>
                   <td>
-                    <v-select
+                    <b-form-select
                       v-model="i.main"
-                      :options="[{label: 'Нет', value: '0'}, {label: 'Да', value: '1'}]"
+                      :options="[{text: 'Нет', value: 0}, {text: 'Да', value: 1}]"
                       :reduce="item => item.value"
+                      class="form-control"
                     />
                   </td>
                   <td class="text-center">
@@ -202,19 +208,19 @@ export default class DeviceUpdate extends Vue {
   isLoaded = false
   iTypes = [
     {
-      label: 'Агент',
+      text: 'Агент',
       value: '1'
     },
     {
-      label: 'SNMP',
+      text: 'SNMP',
       value: '2'
     },
     {
-      label: 'IPMI',
+      text: 'IPMI',
       value: '3'
     },
     {
-      label: 'JMX',
+      text: 'JMX',
       value: '4'
     }
   ]
@@ -254,7 +260,7 @@ export default class DeviceUpdate extends Vue {
   private selectedGroups = []
 
   mounted (): void {
-    const token: any = localStorage.getItem('token')
+    const token: string = localStorage.getItem('token') ?? ''
     this.groupsRpc.auth = token
     this.updateRpc.auth = token
     this.hostId = this.$route.params.id
@@ -282,7 +288,7 @@ export default class DeviceUpdate extends Vue {
       })
   }
 
-  checkForm (event: any): void {
+  checkForm (event: Event): void {
     if (!this.entry.host) {
       this.errors.push('Укажите хост')
     }
@@ -303,7 +309,7 @@ export default class DeviceUpdate extends Vue {
     this.entry.interfaces.splice(id, 1)
   }
 
-  submit (event: any): void {
+  submit (event: Event): void {
     this.errors = []
     this.checkForm(event)
     event.preventDefault()

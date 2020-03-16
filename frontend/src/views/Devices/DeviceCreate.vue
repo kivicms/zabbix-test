@@ -1,5 +1,8 @@
 <template>
-  <div class="card">
+  <div
+    v-if="isReady"
+    class="card"
+  >
     <div class="card-header">
       Добавить хост
       <router-link
@@ -27,7 +30,7 @@
             <div class="form-group">
               <label>Хост</label>
               <input
-                v-model="createRpc.params.host"
+                v-model="createDeviceRequest.host"
                 type="text"
                 class="form-control"
                 required
@@ -37,7 +40,7 @@
             <div class="form-group">
               <label>Название</label>
               <input
-                v-model="createRpc.params.name"
+                v-model="createDeviceRequest.name"
                 type="text"
                 class="form-control"
                 required
@@ -57,7 +60,7 @@
             <div class="form-group">
               <label>Описание</label>
               <textarea
-                v-model="createRpc.params.description"
+                v-model="createDeviceRequest.description"
                 type="text"
                 class="form-control"
               />
@@ -66,7 +69,7 @@
             <div class="form-group">
               <label>Местоположение</label>
               <input
-                v-model="createRpc.params.inventory.location"
+                v-model="createDeviceRequest.inventory.location"
                 type="text"
                 class="form-control"
                 required
@@ -76,7 +79,7 @@
             <div class="form-group">
               <label>Широта</label>
               <input
-                v-model="createRpc.params.inventory.location_lat"
+                v-model="createDeviceRequest.inventory.location_lat"
                 type="number"
                 class="form-control"
                 required
@@ -86,7 +89,7 @@
             <div class="form-group">
               <label>Долгота</label>
               <input
-                v-model="createRpc.params.inventory.location_lon"
+                v-model="createDeviceRequest.inventory.location_lon"
                 type="number"
                 class="form-control"
                 required
@@ -118,46 +121,52 @@
               </thead>
               <tbody>
                 <tr
-                  v-for="i, iIndex in createRpc.params.interfaces"
+                  v-for="i, iIndex in createDeviceRequest.interfaces"
                   :key="iIndex"
                 >
                   <td>
-                    <v-select
+                    <b-form-select
                       v-model="i.type"
                       :options="iTypes"
                       :reduce="item => item.value"
+                      class="form-control"
                     />
                   </td>
                   <td>
                     <input
                       v-model="i.dns"
                       type="text"
+                      class="form-control"
                     >
                   </td>
                   <td>
                     <input
                       v-model="i.ip"
                       type="text"
+                      class="form-control"
                     >
                   </td>
                   <td>
                     <input
                       v-model="i.port"
                       type="text"
+                      class="form-control"
                     >
                   </td>
                   <td>
-                    <v-select
+                    <b-form-select
                       v-model="i.useip"
-                      :options="[{label: 'Use DNS', value: 0}, {label: 'Use IP', value: 1}]"
+                      :options="[{text: 'Use DNS', value: 0}, {text: 'Use IP', value: 1}]"
                       :reduce="item => item.value"
+                      class="form-control"
                     />
                   </td>
                   <td>
-                    <v-select
+                    <b-form-select
                       v-model="i.main"
-                      :options="[{label: 'Нет', value: 0}, {label: 'Да', value: 1}]"
+                      :options="[{text: 'Нет', value: 0}, {text: 'Да', value: 1}]"
                       :reduce="item => item.value"
+                      class="form-control"
                     />
                   </td>
                   <td class="text-center">
@@ -192,24 +201,26 @@
 import { Component, Vue } from 'vue-property-decorator'
 import Group from '@/entities/Group'
 import Interface from '@/entities/Interface'
+import CreateDeviceRequest from '@/request/CreateDeviceRequest'
 
   @Component
 export default class DeviceCreate extends Vue {
+  isReady = false
     iTypes = [
       {
-        label: 'Агент',
+        text: 'Агент',
         value: 1
       },
       {
-        label: 'SNMP',
+        text: 'SNMP',
         value: 2
       },
       {
-        label: 'IPMI',
+        text: 'IPMI',
         value: 3
       },
       {
-        label: 'JMX',
+        text: 'JMX',
         value: 4
       }
     ]
@@ -224,6 +235,8 @@ export default class DeviceCreate extends Vue {
       id: 1,
       auth: ''
     }
+
+    private createDeviceRequest: CreateDeviceRequest = new CreateDeviceRequest('host.create')
 
     private createRpc = {
       jsonrpc: '2.0',
@@ -254,9 +267,10 @@ export default class DeviceCreate extends Vue {
     private selectedGroups = []
 
     mounted (): void {
-      const token: any = localStorage.getItem('token')
+      const token: string = localStorage.getItem('token') ?? ''
       this.groupsRpc.auth = token
       this.createRpc.auth = token
+      // this.createDeviceRequest = new CreateDeviceRequest()
       this.fetchGroups()
     }
 
@@ -266,42 +280,43 @@ export default class DeviceCreate extends Vue {
       this.$axios.post('http://localhost:8888/api_jsonrpc.php', this.groupsRpc)
         .then(response => {
           this.groups = response.data.result
+          this.isReady = true
         })
         .catch(error => {
           console.log(error)
         })
     }
 
-    checkForm (event: any): void {
-      if (!this.createRpc.params.host) {
+    checkForm (event: Event): void {
+      if (!this.createDeviceRequest.host) {
         this.errors.push('Укажите хост')
       }
 
-      if (!this.createRpc.params.name) {
+      if (!this.createDeviceRequest.name) {
         this.errors.push('Укажите название')
       }
       event.preventDefault()
     }
 
     addInterface (): void {
-      this.createRpc.params.interfaces.push(new Interface('0', '0', '0', '', '', '0'))
+      this.createDeviceRequest.interfaces.push(new Interface('0', '0', '0', '', '', '10050'))
     }
 
     removeInterface (id: number): void {
       console.log(id)
-      this.createRpc.params.interfaces.splice(id, 1)
+      this.createDeviceRequest.interfaces.splice(id, 1)
     }
 
-    submit (event: any): void {
+    submit (event: Event): void {
       this.errors = []
       this.checkForm(event)
       event.preventDefault()
-      // eslint-disable-next-line
-      this.createRpc.params.groups = this.selectedGroups.map ((item: Group) => {
-        return { groupid: item.groupid }
+      this.createDeviceRequest.groups = this.selectedGroups.map((item: Group) => {
+        return new Group(item.groupid) // { groupid: item.groupid }
       })
 
-      this.$axios.post('http://localhost:8888/api_jsonrpc.php', this.createRpc)
+      this.$axios.post('http://localhost:8888/api_jsonrpc.php', this.createDeviceRequest.getData()
+      )
         .then(response => {
           if (response.data.error) {
             alert(response.data.error.data)

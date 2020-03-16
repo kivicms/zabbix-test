@@ -29,8 +29,7 @@ export default class GraphModal extends Vue {
     }
 
     mounted (): void {
-      const token: any = localStorage.getItem('token')
-      this.graphRpc.auth = token
+      this.graphRpc.auth = localStorage.getItem('token') ?? ''
       this.graphRpc.params.hostids = this.hostId
       this.graphRpc.params.graphids = this.graphId
       this.$axios

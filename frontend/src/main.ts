@@ -3,7 +3,6 @@ import 'mutationobserver-shim'
 import Vue from 'vue'
 import './plugins/fontawesome'
 import './plugins/axios'
-import { ZabbixPlugin } from './plugins/zabbix'
 import './plugins/bootstrap-vue'
 import App from './App.vue'
 import './registerServiceWorker'
@@ -12,7 +11,7 @@ import store from './store'
 import vSelect from 'vue-select'
 
 import 'vue-select/src/scss/vue-select.scss'
-
+import { google } from 'google-maps'
 import * as VueGoogleMaps from 'vue2-google-maps'
 Vue.use(VueGoogleMaps, {
   load: {
@@ -21,7 +20,6 @@ Vue.use(VueGoogleMaps, {
   }
 })
 
-Vue.use(ZabbixPlugin)
 Vue.component('v-select', vSelect)
 Vue.config.productionTip = false
 

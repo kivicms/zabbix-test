@@ -29,7 +29,7 @@
           </b-nav-item>
           <b-nav-item-dropdown right>
             <template v-slot:button-content>
-              <em>{{UserName}}</em>
+              <em>{{ UserName }}</em>
             </template>
             <b-dropdown-item to="/profile">
               <font-awesome-icon icon="user" />

@@ -34,16 +34,19 @@
             <applications :applications="entry.applications" />
           </b-tab>
           <b-tab title="Графики">
-            <graphs :graphs="entry.graphs" :host-id="entry.hostid" />
+            <graphs
+              :graphs="entry.graphs"
+              :host-id="entry.hostid"
+            />
           </b-tab>
           <b-tab title="Discoveries">
             <discoveries :discoveries="entry.discoveries" />
           </b-tab>
           <b-tab title="Screens">
-            <screens :entry="entry" />
+            <screens :screens="entry.screens" />
           </b-tab>
           <b-tab title="Tags">
-            <tags :entry="entry" />
+            <tags :tags="entry.tags" />
           </b-tab>
         </b-tabs>
       </div>
@@ -104,8 +107,7 @@ export default class DeviceView extends Vue {
     }
 
     mounted (): void {
-      const token: any = localStorage.getItem('token')
-      this.viewRpc.auth = token
+      this.viewRpc.auth = localStorage.getItem('token') ?? ''
       this.hostId = this.$route.params.id
       this.viewRpc.params.hostids = this.hostId
       this.$axios.post('http://localhost:8888/api_jsonrpc.php', this.viewRpc).then(res => {

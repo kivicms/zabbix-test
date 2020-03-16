@@ -31,14 +31,11 @@
         :show-modal="showModal"
       />
     </b-modal>
-
   </div>
 </template>
 <script lang='ts'>
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import GraphModal from '@/views/Devices/partials/GraphModal.vue'
-import IHost from '@/interfaces/IHost'
-import Host from '@/entities/Host'
 import Graph from '@/entities/Graph'
 
 @Component({ components: { GraphModal } })
