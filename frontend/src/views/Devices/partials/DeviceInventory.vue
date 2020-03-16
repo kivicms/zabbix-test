@@ -5,51 +5,51 @@
         Местоположение
       </dt>
       <dd class="col-sm-9">
-        {{ entry.inventory.location }}
+        {{ inventory.location }}
       </dd>
 
       <dt class="col-sm-3">
         Широта
       </dt>
       <dd class="col-sm-9">
-        {{ entry.inventory.location_lat }}
+        {{ inventory.location_lat }}
       </dd>
 
       <dt class="col-sm-3">
         Долгота
       </dt>
       <dd class="col-sm-9">
-        {{ entry.inventory.location_lon }}
+        {{ inventory.location_lon }}
       </dd>
     </dl>
     <hr>
     <em>Неупорядоченный список всех параметров из inventory</em>
     <dl
-      v-for="a, i in all"
+      v-for="param, i in allParams"
       :key="i"
       class="row"
     >
       <dt class="col-sm-3">
-        {{ a.key }}
+        {{ param.key }}
       </dt>
       <dd class="col-sm-9">
-        {{ a.val }}
+        {{ param.val }}
       </dd>
     </dl>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import IHost from '@/interfaces/IHost'
+import Inventory from '@/entities/Inventory'
 
 @Component
-export default class Inventory extends Vue {
-    @Prop(Object) readonly entry: IHost | undefined
+export default class DeviceInventory extends Vue {
+    @Prop(Array) readonly inventory: Inventory
 
-    all: Array<{ key: string; val: string}> = []
+    allParams: Array<{ key: string; val: string}> = []
     mounted (): void {
-      for (const [key, value] of Object.entries((this.entry as IHost).inventory)) {
-        this.all.push({ key: key, val: value })
+      for (const [key, value] of Object.entries(this.inventory)) {
+        this.allParams.push({ key: key, val: value })
       }
     }
 }

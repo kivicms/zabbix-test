@@ -1,5 +1,8 @@
 <template>
-  <div class="card">
+  <div
+    v-if="isLoaded"
+    class="card"
+  >
     <div class="card-header">
       Данные хоста: <strong>{{ entry.name }}</strong>
       <router-link
@@ -9,10 +12,7 @@
         <font-awesome-icon icon="arrow-left" />
       </router-link>
     </div>
-    <div
-      v-if="isLoaded"
-      class="card-body"
-    >
+    <div class="card-body">
       <div>
         <b-tabs content-class="mt-3">
           <b-tab
@@ -22,19 +22,22 @@
             <device :entry="entry" />
           </b-tab>
           <b-tab title="Группы">
-            <groups :entry="entry" />
+            <groups :groups="entry.groups" />
           </b-tab>
           <b-tab title="Inventory">
-            <inventory :entry="entry" />
+            <device-inventory :inventory="entry.inventory" />
           </b-tab>
           <b-tab title="Items">
-            <items :entry="entry" />
+            <items :items="entry.items" />
+          </b-tab>
+          <b-tab title="Приложения">
+            <applications :applications="entry.applications" />
           </b-tab>
           <b-tab title="Графики">
-            <graphs :entry="entry" />
+            <graphs :graphs="entry.graphs" :host-id="entry.hostid" />
           </b-tab>
-          <b-tab title="HostDiscovery">
-            <discoveries :entry="entry" />
+          <b-tab title="Discoveries">
+            <discoveries :discoveries="entry.discoveries" />
           </b-tab>
           <b-tab title="Screens">
             <screens :entry="entry" />
@@ -54,19 +57,22 @@ import Device from './partials/Device.vue'
 import Discoveries from '@/views/Devices/partials/Discoveries.vue'
 import Graphs from '@/views/Devices/partials/Graphs.vue'
 import Groups from '@/views/Devices/partials/Groups.vue'
-import Inventory from '@/views/Devices/partials/Inventory.vue'
 import Screens from '@/views/Devices/partials/Screens.vue'
 import Tags from '@/views/Devices/partials/Tags.vue'
 import Items from '@/views/Devices/partials/Items.vue'
+import Applications from '@/views/Devices/partials/Applications.vue'
+import Host from '@/entities/Host'
+import DeviceInventory from '@/views/Devices/partials/DeviceInventory.vue'
 
   @Component({
     components: {
+      DeviceInventory,
+      Applications,
       Items,
       Device,
       Discoveries,
       Graphs,
       Groups,
-      Inventory,
       Screens,
       Tags
     }
@@ -74,7 +80,7 @@ import Items from '@/views/Devices/partials/Items.vue'
 export default class DeviceView extends Vue {
     isLoaded = false
     hostId = ''
-    entry = {}
+    entry: Host
 
     private viewRpc = {
       jsonrpc: '2.0',
@@ -103,7 +109,7 @@ export default class DeviceView extends Vue {
       this.hostId = this.$route.params.id
       this.viewRpc.params.hostids = this.hostId
       this.$axios.post('http://localhost:8888/api_jsonrpc.php', this.viewRpc).then(res => {
-        this.entry = res.data.result[0]
+        this.entry = res.data.result[0] as Host
         this.isLoaded = true
       })
         .catch(error => {
@@ -112,7 +118,3 @@ export default class DeviceView extends Vue {
     }
 }
 </script>
-
-<style scoped>
-
-</style>

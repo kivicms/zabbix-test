@@ -1,18 +1,19 @@
 <template>
   <div>
     <ul class="list-group">
-      <li v-for="g, index in entry.groups" v-bind:key="index" class="list-group-item">
-        {{ g.name }}
+      <li v-for="group, index in groups" v-bind:key="index" class="list-group-item">
+        {{ group.name }}
       </li>
     </ul>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
+import Group from '@/entities/Group'
 
   @Component
 export default class Groups extends Vue {
-    @Prop(Object) readonly entry: object | undefined
+    @Prop({ type: Array }) groups: Array<Group>
 }
 </script>
 

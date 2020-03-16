@@ -79,8 +79,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import StatusBadge from '@/views/Devices/StatusBadge.vue'
-
-import IHost from '@/interfaces/IHost'
+import Host from '@/entities/Host'
 
 @Component({
   components: { StatusBadge }
@@ -96,11 +95,10 @@ export default class DeviceList extends Vue {
       id: 1
     }
 
-    private hosts: Array<IHost> = []
+    private hosts: Array<Host> = []
 
     mounted (): void {
-      const token: any = localStorage.getItem('token')
-      this.rpc.auth = token
+      this.rpc.auth = localStorage.getItem('token') ?? ''
       this.fetch()
     }
 

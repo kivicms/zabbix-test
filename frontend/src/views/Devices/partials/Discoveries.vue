@@ -2,21 +2,23 @@
   <div>
     <ul class="list-group">
       <li
-        v-for="g, index in entry.discoveries"
+        v-for="d, index in discoveries"
         :key="index"
         class="list-group-item"
       >
-        {{ g.name }}
+        {{ d.name }}<br>
+        <small>{{ d.description }}</small>
       </li>
     </ul>
   </div>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
+import Discovery from '@/entities/Discovery'
 
 @Component
-export default class Discovery extends Vue {
-    @Prop(Object) readonly entry: object | undefined
+export default class Discoveries extends Vue {
+  @Prop({ type: Array }) readonly discoveries: Array<Discovery>
 }
 </script>
 

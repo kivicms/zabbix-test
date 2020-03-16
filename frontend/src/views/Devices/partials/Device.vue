@@ -31,10 +31,11 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
+import Host from '@/entities/Host'
 
   @Component
 export default class Device extends Vue {
-    @Prop(Object) readonly entry: object | undefined
+    @Prop(Object) readonly entry: Host
 }
 </script>
 
