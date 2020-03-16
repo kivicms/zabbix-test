@@ -205,8 +205,8 @@ services:
           - mysql-server
           - zabbix-database
           - mysql-database
-
-  image: nginx
+  frontend:
+    image: nginx
     volumes:
       - ./mysite.template:/etc/nginx/conf.d/mysite.template
     ports:
