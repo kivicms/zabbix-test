@@ -3,12 +3,26 @@ import 'mutationobserver-shim'
 import Vue from 'vue'
 import './plugins/fontawesome'
 import './plugins/axios'
+import { ZabbixPlugin } from './plugins/zabbix'
 import './plugins/bootstrap-vue'
 import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
+import vSelect from 'vue-select'
 
+import 'vue-select/src/scss/vue-select.scss'
+
+import * as VueGoogleMaps from 'vue2-google-maps'
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyA2gV866ygAcuZ16-5pbwrWBZ3j4AQyurA',
+    libraries: 'places'
+  }
+})
+
+Vue.use(ZabbixPlugin)
+Vue.component('v-select', vSelect)
 Vue.config.productionTip = false
 
 new Vue({

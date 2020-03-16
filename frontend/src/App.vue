@@ -1,22 +1,5 @@
 <template>
-  <div
-    id="app"
-    class="container"
-  >
-    <div id="nav">
-      <router-link to="/">
-        Главная
-      </router-link> |
-      <router-link to="/login">
-        Авторизация
-      </router-link> |
-      <router-link to="/device-list">
-        Список устройств
-      </router-link> |
-      <router-link to="/about">
-        About
-      </router-link>
-    </div>
+  <div id="app">
     <router-view />
   </div>
 </template>
