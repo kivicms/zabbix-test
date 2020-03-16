@@ -10,4 +10,4 @@ docker run --name some-zabbix-web-apache-mysql --link some-mysql-server:mysql -e
 // Готовый на рабочей тачке
 docker run --name test-zabbix-appliance -p 8888:80 -p 10051:10051 -d zabbix/zabbix-appliance:latest
 
-winpty docker exec -ti 430ece62385b bash
+winpty docker exec -ti 9173c7eae0a7 bash
