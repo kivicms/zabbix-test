@@ -238,28 +238,6 @@ export default class DeviceCreate extends Vue {
 
     private createDeviceRequest: CreateDeviceRequest = new CreateDeviceRequest('host.create')
 
-    private createRpc = {
-      jsonrpc: '2.0',
-      method: 'host.create',
-      params: {
-        host: null,
-        name: null,
-        description: null,
-        groups: [],
-        // Описание интерфейса дано для упрощения
-        interfaces: [],
-        inventory: {
-          location: '',
-          // eslint-disable-next-line
-          location_lat: '',
-          // eslint-disable-next-line
-          location_lon: ''
-        }
-      },
-      id: 2,
-      auth: ''
-    }
-
     private groups: Array<Group> = []
 
     private errors: Array<string> = []
@@ -269,8 +247,6 @@ export default class DeviceCreate extends Vue {
     mounted (): void {
       const token: string = localStorage.getItem('token') ?? ''
       this.groupsRpc.auth = token
-      this.createRpc.auth = token
-      // this.createDeviceRequest = new CreateDeviceRequest()
       this.fetchGroups()
     }
 
@@ -312,7 +288,7 @@ export default class DeviceCreate extends Vue {
       this.checkForm(event)
       event.preventDefault()
       this.createDeviceRequest.groups = this.selectedGroups.map((item: Group) => {
-        return new Group(item.groupid) // { groupid: item.groupid }
+        return new Group(item.groupid)
       })
 
       this.$axios.post('http://localhost:8888/api_jsonrpc.php', this.createDeviceRequest.getData()
